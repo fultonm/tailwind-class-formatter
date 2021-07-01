@@ -1,20 +1,16 @@
-# tailwind-class-formatter README
+# Tailwind Class Formatter
 
-This is the README for your extension "tailwind-class-formatter". After writing up a brief description, we recommend including the following sections.
+A Visual Studio Code extension providing opinionated Tailwind class formatting support for JSX files. Supports JIT classes.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+The extension will scan your document for JSX components containing the `className` property. Classes which match any Tailwind pattern will be ordered and each placed on a new line in the document. Classes which are not detected as a Tailwind class are placed at the top in the original order.
 
 For example if there is an image subfolder under your extension project workspace:
 
 \!\[feature X\]\(images/feature-x.png\)
 
 > Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
 ## Extension Settings
 
@@ -24,42 +20,15 @@ For example:
 
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `tailwind-class-formatter.enable`: Enable/disable Tailwind Class Formatter.
+* `tailwind-class-formatter.defaultSortOrder`: The sort order of Tailwind classes. Many of the classes listed here are prefixes that will match if any classes found within a `className` element begin with a value in this list. Additionally, the classes are specified from least specific to most specific. For example, any class starting with `m-`, such as `m-[3px]` will be ordered before classes starting with `mt-`.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+The extension is currently in early development and not ready for release. Please expect that not all main features listed above are working as described.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial commit with extension template.
