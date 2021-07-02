@@ -24,7 +24,15 @@
 			{
 				"title": "Tailwind Class Formatter",
 				"properties": {
-					"tailwind-class-formatter.defaultSortOrder": {
+					"tailwind-class-formatter.enable": {
+						"type": "boolean",
+						"default": true
+					},
+					"tailwind-class-formatter.nonTailwindClassBefore": {
+						"type": "boolean",
+						"default": true
+					},
+					"tailwind-class-formatter.sortOrder": {
 						"type": "array",
 						"default": [
 							"container",
@@ -234,11 +242,11 @@
 							"rounded-br-",
 							"rounded-bl-",
 							"border",
+							"border-",
 							"border-t-",
 							"border-r-",
 							"border-b-",
 							"border-l-",
-							"border-",
 							"border-opacity-",
 							"border-solid",
 							"border-dashed",

@@ -4,7 +4,11 @@ A Visual Studio Code extension providing opinionated Tailwind class formatting s
 
 ## Features
 
-The extension will scan your document for JSX components containing the `className` property. Classes which match any Tailwind pattern will be ordered and each placed on a new line in the document. Classes which are not detected as a Tailwind class are placed at the top in the original order.
+The extension will scan your document for JSX components containing the `className` property and format them according to the extension features:
+
+* **Class ordering** Tailwind classes will be ordered according to a configurable sort order. Non-Tailwind classes can be configured to be placed before or after Tailwind classes (default is before). See the Extension Settings section below.
+
+* **Indentation matching**: For a cleaner JSX file, each class is placed on a new line and indented using spaces to match the quote position of the `className`
 
 For example if there is an image subfolder under your extension project workspace:
 
@@ -21,7 +25,10 @@ For example:
 This extension contributes the following settings:
 
 * `tailwind-class-formatter.enable`: Enable/disable Tailwind Class Formatter.
-* `tailwind-class-formatter.defaultSortOrder`: The sort order of Tailwind classes. Many of the classes listed here are prefixes that will match if any classes found within a `className` element begin with a value in this list. Additionally, the classes are specified from least specific to most specific. For example, any class starting with `m-`, such as `m-[3px]` will be ordered before classes starting with `mt-`.
+* `tailwind-class-formatter.nonTailwindClassBefore`: Whether to place non-Tailwind classes before Tailwind classes.
+* `tailwind-class-formatter.sortOrder`: The sorting order of Tailwind classes. Some of the classes listed in this array are class prefixes. The classes are specified from least specific to most specific. For example, any class starting with `m-`, such as `m-[3px]` will be ordered before classes starting with `mt-`. More prefixes and even whole class names can be added to specify sort order more granularly.
+  * For example, `bg-[#` can be added to the `sortOrder` configuration to sort the JIT class `bg-[#1da1f1]` for background color before or after other `bg-` prefixed classes.
+
 
 ## Known Issues
 
