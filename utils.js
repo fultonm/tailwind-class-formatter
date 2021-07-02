@@ -12,34 +12,37 @@ function getConditionalClassLines({
   pnumWhitespacePrefixLength,
   pnumTabSize = 2,
   pstrTemplateLiteralPlaceholderBegin,
-  pstrTemplateLiteralPlaceholderEnd
+  pstrTemplateLiteralPlaceholderEnd,
+  parrSortOrder
 }) {
   const strWhitespacePrefix = ' '.repeat(pnumWhitespacePrefixLength)
   const strIndent = ' '.repeat(pnumTabSize)
 
   const strFormattedTruthyClasses = getFormattedClasses({
     pstrClasses: pstrTruthyClasses,
-    pnumWhitespacePrefixLength: pnumWhitespacePrefixLength + strIndent.length
+    pnumWhitespacePrefixLength: pnumWhitespacePrefixLength + strIndent.length,
+    parrSortOrder
   })
 
   const strFormattedFalsyClasses = getFormattedClasses({
     pstrClasses: pstrFalsyClasses,
-    pnumWhitespacePrefixLength: pnumWhitespacePrefixLength + strIndent.length
+    pnumWhitespacePrefixLength: pnumWhitespacePrefixLength + strIndent.length,
+    parrSortOrder
   })
-
 
   const strConditionalLines =
     pstrTemplateLiteralPlaceholderBegin + pstrCondition +
   '\n' + strWhitespacePrefix + strIndent + '? ' + pstrTruthyQuote + strFormattedTruthyClasses + pstrTruthyQuote +
-  '\n' + strWhitespacePrefix + strIndent + ': ' + pstrFalsyQuote + strFormattedFalsyClasses + pstrFalsyQuote + pstrTemplateLiteralPlaceholderEnd +
-  '\n'
+  '\n' + strWhitespacePrefix + strIndent + ': ' + pstrFalsyQuote + strFormattedFalsyClasses + pstrFalsyQuote + pstrTemplateLiteralPlaceholderEnd
 
+  let i = 1;
   return strConditionalLines
 }
 
 function getFormattedClasses({
   pstrClasses,
-  pnumWhitespacePrefixLength
+  pnumWhitespacePrefixLength,
+  parrSortOrder
 }) {
   const objClassIsolateRegex = /(\S+)/gm
   const arrClasses = []
@@ -50,6 +53,30 @@ function getFormattedClasses({
     arrClasses.push(strClass)
     objClassIsolateRegex.lastIndex++
   }
+
+  if (arrClasses.length < 1) {
+    return ''
+  }
+
+  arrClasses.sort((a, b) => {
+    let aSortIndex = Number.MIN_SAFE_INTEGER
+    let bSortIndex = Number.MIN_SAFE_INTEGER
+    parrSortOrder.forEach((classPrefix, i) => {
+      if (aSortIndex === Number.MAX_SAFE_INTEGER && a.startsWith(classPrefix)) {
+        aSortIndex = i
+      }
+      if (bSortIndex === Number.MAX_SAFE_INTEGER && b.startsWith(classPrefix)) {
+        bSortIndex = i
+      }
+    })
+    if (aSortIndex < bSortIndex) {
+      return -1
+    } else if (aSortIndex > bSortIndex) {
+      return 1
+    }
+    return 0
+  })
+
 
   let strFormattedClasses = `${arrClasses[0]}`
   for (let i = 1; i < arrClasses.length; i++) {

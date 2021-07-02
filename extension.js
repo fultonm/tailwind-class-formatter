@@ -32,7 +32,8 @@ function activate(context) {
 			return
 		}
 		const blnNonTailwindClassBefore = config.get('tailwind-class-formatter.nonTailwindClassBefore');
-		const arrSortOrder = config.get('tailwind-class-formatter.sortOrder');
+		const arrSortOrder = config.get('tailwind-class-formatter.sortOrder').slice();
+		arrSortOrder.reverse()
 		const numTabSize = config.get('editor.tabSize')
 		const blnInsertSpace = config.get('editor.insertSpace')
 		// If support for other languages will be considered we may use these in the future.
@@ -54,6 +55,7 @@ function activate(context) {
 				const strFormattedClasses = utils.getFormattedClasses({
 					pstrClasses: strClasses,
 					pnumWhitespacePrefixLength: numWhitespacePrefixLength,
+					parrSortOrder: arrSortOrder
 				})
 				strReplacement += strQuote + strFormattedClasses + strQuote
 			} else {
@@ -62,19 +64,22 @@ function activate(context) {
 				const strTemplateLiteralContent = iterDocumentMatch[1]
 				const { strStaticClasses, arrConditionals } = utils.getConditionalsFromTemplateLiteral(strTemplateLiteralContent)
 				const numWhitespacePrefixLength = editor.document.positionAt(iterDocumentMatch.index + 12).character
-				arrConditionals.forEach((objConditional) => {
+				arrConditionals.forEach((objConditional, i) => {
 					const strConditionalClassLines = utils.getConditionalClassLines({
 						...objConditional,
 						pnumWhitespacePrefixLength: numWhitespacePrefixLength,
 						pnumTabSize: numTabSize,
 						pstrTemplateLiteralPlaceholderBegin: strTemplateLiteralPlaceholderBegin,
-						pstrTemplateLiteralPlaceholderEnd: strTemplateLiteralPlaceholderEnd
+						pstrTemplateLiteralPlaceholderEnd: strTemplateLiteralPlaceholderEnd,
+						parrSortOrder: arrSortOrder
 					})
-					strReplacement += strConditionalClassLines
+					const strSubsequentNewline = i > 0 ? '\n' : ''
+					strReplacement += strSubsequentNewline + strConditionalClassLines
 				})
 				const strFormattedStaticClasses = utils.getFormattedClasses({
 					pstrClasses: strStaticClasses,
-					pnumWhitespacePrefixLength: numWhitespacePrefixLength
+					pnumWhitespacePrefixLength: numWhitespacePrefixLength,
+					parrSortOrder: arrSortOrder
 				})
 				strReplacement += strFormattedStaticClasses + strTemplateLiteralEnd		
 			}
